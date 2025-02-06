@@ -1,12 +1,12 @@
-import AnalyticsDashboard from '@/components/dashboard'
-import React from 'react'
+import AnalyticsDashboard from "@/components/dashboard";
+import React from "react";
 
 const Workspace = () => {
   return (
-   <>
-   <AnalyticsDashboard />
-   </>
-  )
-}
+    <>
+      <AnalyticsDashboard />
+    </>
+  );
+};
 
-export default Workspace
+export default Workspace;

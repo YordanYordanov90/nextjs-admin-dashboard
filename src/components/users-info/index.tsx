@@ -26,6 +26,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { DatePicker } from "../date-picker";
+
+import StatusCell from "./status-button";
+import AddNote from "../add-note-button";
+import SubscriptionButton from '../subscription-button';
 
 type User = {
   email: string;
@@ -34,7 +39,7 @@ type User = {
   subscriptions: number;
   notes?: string;
   status: "NEW";
-}
+};
 
 const users: User[] = [
   {
@@ -67,8 +72,8 @@ export default function UserDashboard() {
   const [perPage, setPerPage] = useState("10");
 
   return (
-    <div className="p-6 max-w-[1440px] mx-auto">
-      <h1 className="text-2xl font-semibold mb-6">Users</h1>
+    <div className="py-10 container  mx-auto">
+      <h1 className="text-2xl  mb-6">Users</h1>
 
       <div className="flex items-center gap-4 mb-6">
         <div className="relative flex-1">
@@ -80,16 +85,8 @@ export default function UserDashboard() {
             className="pl-10 h-10  border-gray-200"
           />
         </div>
-        <Input
-          type="date"
-          className="w-[180px] h-10 border-gray-200"
-          placeholder="From date"
-        />
-        <Input
-          type="date"
-          className="w-[180px] h-10 border-gray-200"
-          placeholder="To date"
-        />
+        <DatePicker name="From date..." placeholder="Select from date" />
+        <DatePicker name="To date..." placeholder="Select to date" />
       </div>
 
       <div className="rounded-md border border-gray-200">
@@ -111,31 +108,12 @@ export default function UserDashboard() {
                 <TableCell>{user.createdAt}</TableCell>
                 <TableCell>{user.workspaces}</TableCell>
                 <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        className="h-8 px-2 text-gray-600 hover:bg-gray-100"
-                      >
-                        {user.subscriptions} Subscription(s)
-                        <ChevronDown className="h-4 w-4 ml-1" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuItem>View Details</DropdownMenuItem>
-                      <DropdownMenuItem>Manage Subscription</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  {/* WIP make subscription dropdown separate component */}
+                <SubscriptionButton subscriptions={user.subscriptions} />
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      className="h-8 bg-black text-white hover:bg-black/90"
-                    >
-                      Add Note
-                    </Button>
+                    <AddNote />
                     {user.notes && (
                       <Button
                         variant="link"
@@ -148,25 +126,7 @@ export default function UserDashboard() {
                   </div>
                 </TableCell>
                 <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="h-8 border-gray-200"
-                      >
-                        <span className="bg-black text-white text-xs px-2 py-0.5 rounded mr-2">
-                          {user.status}
-                        </span>
-                        <ChevronDown className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuItem>Active</DropdownMenuItem>
-                      <DropdownMenuItem>Inactive</DropdownMenuItem>
-                      <DropdownMenuItem>Suspended</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  <StatusCell status={user.status} />
                 </TableCell>
               </TableRow>
             ))}

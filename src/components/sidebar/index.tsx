@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Home, Users, LogOut, ChevronRight } from "lucide-react";
+import { Home, Users, LogOut, ChevronRight, ChevronsRight } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -23,19 +23,23 @@ interface NavItemProps {
   label: string;
   href: string;
   expanded: boolean;
+  isActive: boolean;
 }
 
-const NavItem = ({ icon: Icon, label, href, expanded }: NavItemProps) => {
+const NavItem = ({ icon: Icon, label, href, expanded, isActive }: NavItemProps) => {
+
+
   return (
     <TooltipProvider delayDuration={0}>
       <Tooltip>
         <TooltipTrigger asChild>
           <Link href={href}>
             <Button
-              variant="outline"
+              variant="ghost"
               className={cn(
-                "w-full flex items-center gap-3 p-3 my-2 rounded-full hover:bg-gray-300",
-                expanded ? "justify-start" : "justify-center"
+                "w-full flex items-center gap-3 p-4 my-2 rounded-full hover:bg-gray-300",
+                expanded ? "justify-start" : "justify-center",
+                isActive ? "bg-gray-300 hover:bg-gray-400:" : "hover:bg-gray-200"
               )}
             >
               <Icon className="w-6 h-6" />
@@ -55,14 +59,21 @@ const NavItem = ({ icon: Icon, label, href, expanded }: NavItemProps) => {
 
 const Sidebar = () => {
   const [expanded, setExpanded] = useState(false);
-  const path = usePathname();
+  const pathname = usePathname();
+
+  const isActive = (href: string) => {
+    if (href === '/workspace') {
+      return pathname === href || pathname === '/';
+    }
+    return pathname.startsWith(href);
+  };
 
   return (
     <div
       className={cn(
         "h-[96vh] text-black bg-white px-1 py-2 mx-auto flex flex-col justify-between",
         "rounded-3xl fixed z-50 left-4 inset-y-4 transition-all ease-in-out duration-150  shadow-2xl",
-        expanded ? "w-[192px]" : "w-[60px]"
+        expanded ? "w-[192px]" : "w-[65px]"
       )}
     >
       <div className="flex flex-col gap-4">
@@ -73,6 +84,7 @@ const Sidebar = () => {
             label={item.label}
             href={item.href}
             expanded={expanded}
+            isActive={isActive(item.href)}
           />
         ))}
       </div>
@@ -105,7 +117,7 @@ const Sidebar = () => {
           onClick={() => setExpanded(!expanded)}
           className="self-end  rounded-full hover:bg-gray-300  transition-transform duration-200"
         >
-          <ChevronRight
+          <ChevronsRight 
             className={cn("w-6 h-6", expanded ? "rotate-180" : "")}
           />
         </Button>

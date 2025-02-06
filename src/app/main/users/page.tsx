@@ -1,10 +1,12 @@
-import UserDashboard from '@/components/users-info'
-import React from 'react'
+import UserDashboard from "@/components/users-info";
+import React from "react";
 
 const UsersBoard = () => {
   return (
-    <div><UserDashboard /></div>
-  )
-}
+    <div>
+      <UserDashboard />
+    </div>
+  );
+};
 
-export default UsersBoard
+export default UsersBoard;
