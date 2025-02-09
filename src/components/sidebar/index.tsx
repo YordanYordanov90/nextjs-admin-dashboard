@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Home, Users, LogOut, ChevronRight, ChevronsRight } from "lucide-react";
+import { Home, Users, ChevronsRight } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -12,13 +12,15 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { usePathname } from "next/navigation";
+import LogoutButton from "./logout-button";
+import { useLayout } from '@/context/LayoutContext';
 
 const menuItems = [
   { icon: Home, label: "Home", href: "/main/workspace" },
   { icon: Users, label: "Users", href: "/main/users" },
 ];
 
-interface NavItemProps {
+type NavItemProps = {
   icon: any;
   label: string;
   href: string;
@@ -30,9 +32,10 @@ const NavItem = ({
   icon: Icon,
   label,
   href,
-  expanded,
   isActive,
 }: NavItemProps) => {
+  const { isExpanded } = useLayout();
+  
   return (
     <TooltipProvider delayDuration={0}>
       <Tooltip>
@@ -41,15 +44,15 @@ const NavItem = ({
             <Button
               variant="ghost"
               className={cn(
-                "w-full flex items-center gap-3 p-4 my-2 rounded-full hover:bg-gray-300",
-                expanded ? "justify-start" : "justify-center",
+                "w-full flex items-center gap-3 rounded-full hover:bg-gray-300",
+                isExpanded ? "justify-start " : "justify-center ",
                 isActive
                   ? "bg-gray-300 hover:bg-gray-400:"
                   : "hover:bg-gray-200"
               )}
             >
-              <Icon className="w-6 h-6" />
-              {expanded && (
+              <Icon className="w-8 h-8" />
+              {isExpanded && (
                 <span className="text-lg ml-2 transition-all duration-200">
                   {label}
                 </span>
@@ -57,14 +60,14 @@ const NavItem = ({
             </Button>
           </Link>
         </TooltipTrigger>
-        {!expanded && <TooltipContent side="right">{label}</TooltipContent>}
+        {!isExpanded && <TooltipContent side="right">{label}</TooltipContent>}
       </Tooltip>
     </TooltipProvider>
   );
 };
 
 const Sidebar = () => {
-  const [expanded, setExpanded] = useState(false);
+  const { isExpanded, setIsExpanded } = useLayout();
   const pathname = usePathname();
 
   const isActive = (href: string) => {
@@ -77,9 +80,9 @@ const Sidebar = () => {
   return (
     <div
       className={cn(
-        "h-[96vh] text-black bg-white px-1 py-2 mx-auto flex flex-col justify-between",
+        "h-[96vh] text-black bg-white px-1 py-2 pt-16 mx-auto flex flex-col justify-between",
         "rounded-3xl fixed z-50 left-4 inset-y-4 transition-all ease-in-out duration-150  shadow-2xl",
-        expanded ? "w-[192px]" : "w-[65px]"
+        isExpanded ? "w-[192px]" : "w-[60px]"
       )}
     >
       <div className="flex flex-col gap-4">
@@ -89,8 +92,8 @@ const Sidebar = () => {
             icon={item.icon}
             label={item.label}
             href={item.href}
-            expanded={expanded}
             isActive={isActive(item.href)}
+            expanded={isExpanded}
           />
         ))}
       </div>
@@ -99,32 +102,19 @@ const Sidebar = () => {
         <TooltipProvider delayDuration={0}>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                className={cn(
-                  "flex items-center gap-3 p-3 rounded-lg hover:bg-gray-300",
-                  expanded ? "justify-start" : "justify-center"
-                )}
-              >
-                <LogOut className="w-6 h-6" />
-                {expanded && (
-                  <span className="text-lg ml-2 transition-all duration-200">
-                    Logout
-                  </span>
-                )}
-              </Button>
+              <LogoutButton expanded={isExpanded} />
             </TooltipTrigger>
-            {!expanded && <TooltipContent side="right">Logout</TooltipContent>}
+            {!isExpanded && <TooltipContent side="right">Logout</TooltipContent>}
           </Tooltip>
         </TooltipProvider>
 
         <Button
           variant="ghost"
-          onClick={() => setExpanded(!expanded)}
-          className="self-end  rounded-full hover:bg-gray-300  transition-transform duration-200"
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="self-end rounded-full hover:bg-gray-300 transition-transform duration-200"
         >
           <ChevronsRight
-            className={cn("w-6 h-6", expanded ? "rotate-180" : "")}
+            className={cn("w-6 h-6", isExpanded ? "rotate-180" : "")}
           />
         </Button>
       </div>

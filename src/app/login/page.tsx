@@ -9,16 +9,17 @@ import { Label } from "@/components/ui/label";
 
 
 
-
 export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
+      setIsLoading(true);
       const response = await fetch("/api/login", {
         method: "POST",
         headers: {
@@ -37,6 +38,8 @@ export default function Login() {
       console.error(error);
       setError("An error occurred");
     }
+
+    setIsLoading(false);
   };
 
   return (
@@ -64,10 +67,11 @@ export default function Login() {
               {error && <p className="text-sm text-red-500">{error}</p>}
             </div>
             <Button
+              disabled={isLoading}
               type="submit"
               className="w-full rounded-3xl bg-black text-white hover:bg-black/90"
             >
-              Login
+              {isLoading ? <LoadingSpinner /> : "Login"}
             </Button>
           </form>
         </CardContent>
@@ -75,3 +79,12 @@ export default function Login() {
     </div>
   );
 }
+
+const LoadingSpinner = () => {
+  return (
+    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+  );
+};
+
+  LoadingSpinner;
+
