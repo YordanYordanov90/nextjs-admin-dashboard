@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, Search } from "lucide-react";
+import { Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,17 +20,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import { DatePicker } from "../date-picker";
 
 import StatusCell from "./status-button";
 import AddNote from "../add-note-button";
-import SubscriptionButton from '../subscription-button';
+import SubscriptionButton from "../subscription-button";
 
 type User = {
   email: string;
@@ -92,7 +87,7 @@ export default function UserDashboard() {
       <div className="rounded-md border border-gray-200">
         <Table>
           <TableHeader>
-            <TableRow className="bg-gray-50">
+            <TableRow className="">
               <TableHead className="font-medium">Email</TableHead>
               <TableHead className="font-medium">Created At</TableHead>
               <TableHead className="font-medium">Workspaces</TableHead>
@@ -108,8 +103,7 @@ export default function UserDashboard() {
                 <TableCell>{user.createdAt}</TableCell>
                 <TableCell>{user.workspaces}</TableCell>
                 <TableCell>
-                  {/* WIP make subscription dropdown separate component */}
-                <SubscriptionButton subscriptions={user.subscriptions} />
+                  <SubscriptionButton subscriptions={user.subscriptions} />
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">

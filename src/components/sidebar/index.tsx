@@ -11,10 +11,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { usePathname } from 'next/navigation';
+import { usePathname } from "next/navigation";
 
 const menuItems = [
-  { icon: Home, label: "Home", href: "/workspace" },
+  { icon: Home, label: "Home", href: "/main/workspace" },
   { icon: Users, label: "Users", href: "/main/users" },
 ];
 
@@ -26,9 +26,13 @@ interface NavItemProps {
   isActive: boolean;
 }
 
-const NavItem = ({ icon: Icon, label, href, expanded, isActive }: NavItemProps) => {
-
-
+const NavItem = ({
+  icon: Icon,
+  label,
+  href,
+  expanded,
+  isActive,
+}: NavItemProps) => {
   return (
     <TooltipProvider delayDuration={0}>
       <Tooltip>
@@ -39,7 +43,9 @@ const NavItem = ({ icon: Icon, label, href, expanded, isActive }: NavItemProps) 
               className={cn(
                 "w-full flex items-center gap-3 p-4 my-2 rounded-full hover:bg-gray-300",
                 expanded ? "justify-start" : "justify-center",
-                isActive ? "bg-gray-300 hover:bg-gray-400:" : "hover:bg-gray-200"
+                isActive
+                  ? "bg-gray-300 hover:bg-gray-400:"
+                  : "hover:bg-gray-200"
               )}
             >
               <Icon className="w-6 h-6" />
@@ -62,8 +68,8 @@ const Sidebar = () => {
   const pathname = usePathname();
 
   const isActive = (href: string) => {
-    if (href === '/workspace') {
-      return pathname === href || pathname === '/';
+    if (href === "/workspace") {
+      return pathname === href || pathname === "/";
     }
     return pathname.startsWith(href);
   };
@@ -117,7 +123,7 @@ const Sidebar = () => {
           onClick={() => setExpanded(!expanded)}
           className="self-end  rounded-full hover:bg-gray-300  transition-transform duration-200"
         >
-          <ChevronsRight 
+          <ChevronsRight
             className={cn("w-6 h-6", expanded ? "rotate-180" : "")}
           />
         </Button>
