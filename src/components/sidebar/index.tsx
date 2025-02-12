@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/tooltip";
 import { usePathname } from "next/navigation";
 import LogoutButton from "./logout-button";
-import { useLayout } from '@/context/LayoutContext';
+import { useLayout } from "@/context/LayoutContext";
 
 const menuItems = [
   { icon: Home, label: "Home", href: "/main/workspace" },
@@ -26,16 +26,11 @@ type NavItemProps = {
   href: string;
   expanded: boolean;
   isActive: boolean;
-}
+};
 
-const NavItem = ({
-  icon: Icon,
-  label,
-  href,
-  isActive,
-}: NavItemProps) => {
+const NavItem = ({ icon: Icon, label, href, isActive }: NavItemProps) => {
   const { isExpanded } = useLayout();
-  
+
   return (
     <TooltipProvider delayDuration={0}>
       <Tooltip>
@@ -74,6 +69,7 @@ const Sidebar = () => {
     if (href === "/workspace") {
       return pathname === href || pathname === "/";
     }
+
     return pathname.startsWith(href);
   };
 
@@ -104,7 +100,9 @@ const Sidebar = () => {
             <TooltipTrigger asChild>
               <LogoutButton expanded={isExpanded} />
             </TooltipTrigger>
-            {!isExpanded && <TooltipContent side="right">Logout</TooltipContent>}
+            {!isExpanded && (
+              <TooltipContent side="right">Logout</TooltipContent>
+            )}
           </Tooltip>
         </TooltipProvider>
 

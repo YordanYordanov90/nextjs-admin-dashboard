@@ -5,6 +5,7 @@ import "@/app/globals.css";
 import Sidebar from "@/components/sidebar";
 import { Layout } from "lucide-react";
 import { LayoutProvider } from "@/context/LayoutContext";
+import { Toaster } from '@/components/ui/toaster';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({
       >
         <LayoutProvider>
           <main>{children}</main>
+          <Toaster />
         </LayoutProvider>
       </body>
     </html>
